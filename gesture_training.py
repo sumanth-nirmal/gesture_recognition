@@ -64,3 +64,7 @@ hist = model.fit(X_train, Y_train,
             nb_epoch=nEpoch,
             validation_data=(X_test, Y_test),
             shuffle=True)
+
+# serialize weights to HDF5
+model.save_weights("model.h5")
+print("Saved model to disk")
