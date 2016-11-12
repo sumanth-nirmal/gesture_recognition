@@ -40,32 +40,30 @@ print(X_test.shape[0], 'test samples')
 Y_train = np_utils.to_categorical(y_train, nClasses)
 Y_test = np_utils.to_categorical(y_test, nClasses)
 '''
-'''
+
 model = Sequential()
 
 model.add(Convolution2D(16, 3, 3, border_mode='same',input_shape=(3,224,224)))
-model.add(Activation('tanh'))
-
-model.summary()
+model.add(Activation('relu'))
 model.add(Convolution2D(16, 3, 3 ))
-model.add(Activation('tanh'))
+model.add(Activation('relu'))
 model.add(Dropout(0.25))
-model.summary()
+
 model.add(Convolution2D(32, 3, 3, border_mode='same'))
-model.add(Activation('tanh'))
-#model.add(Convolution2D(64,3, 3))
-#model.add(Activation('tanh'))
+model.add(Activation('relu'))
+model.add(Convolution2D(64,3, 3))
+model.add(Activation('relu'))
 model.add(Dropout(0.25))
-model.summary()
+
 model.add(Flatten())
 model.add(Dense(32))
-model.add(Activation('tanh'))
+model.add(Activation('relu'))
 model.add(Dropout(0.5))
 model.add(Dense(nClasses))
 model.add(Activation('softmax'))
-model.summary()
-'''
 
+
+'''
 model = Sequential()
 model.add(ZeroPadding2D((1,1),input_shape=(3,224,224)))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
@@ -111,7 +109,7 @@ model.add(Dropout(0.5))
 model.add(Dense(nClasses, activation='softmax'))
 
 model.load_weights("model_10_epochs.h5")
-
+'''
 sgd = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
 model.compile(loss='categorical_crossentropy',
               optimizer=sgd,
@@ -119,10 +117,10 @@ model.compile(loss='categorical_crossentropy',
 
 hist = model.fit_generator(
         train_generator,
-        samples_per_epoch=2000,
+#        samples_per_epoch=2000,
         nb_epoch=10,
-        validation_data=validation_generator,
-        nb_val_samples=800)
+        validation_data=validation_generator)
+#        nb_val_samples=800)
 
 '''
 X_train = X_train.astype('float32')
