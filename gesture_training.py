@@ -6,14 +6,30 @@ from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.optimizers import SGD
 from keras.utils import np_utils
-import dataUtils
+#import dataUtils
 import numpy as np
 
-batch_size = 16
-nClasses = 6
+batch_size = 30
+nClasses = 5
 nEpoch = 60
 dataAugmentation = False
 
+#################################################
+train_datagen = ImageDataGenerator()
+test_datagen = ImageDataGenerator()
+
+train_generator = train_datagen.flow_from_directory(
+        '/home/akshat/deep_learning/Consolidated_Data_Set/Small_dataset/training',
+        target_size=(224, 224),
+        batch_size=30)
+
+validation_generator = test_datagen.flow_from_directory(
+        '/home/akshat/deep_learning/Consolidated_Data_Set/Small_dataset/validation',
+        target_size=(224, 224),
+        batch_size=30)
+
+#################################################
+'''
 (X_train, y_train), (X_test, y_test) = dataUtils.loadData()
 
 print('X_train shape:', X_train.shape)
@@ -23,10 +39,11 @@ print(X_test.shape[0], 'test samples')
 
 Y_train = np_utils.to_categorical(y_train, nClasses)
 Y_test = np_utils.to_categorical(y_test, nClasses)
+'''
 
 model = Sequential()
 
-model.add(Convolution2D(16, 3, 3, border_mode='same',input_shape=(1,50,8)))
+model.add(Convolution2D(16, 3, 3, border_mode='same',input_shape=(3,224,224)))
 model.add(Activation('tanh'))
 
 model.summary()
@@ -53,10 +70,19 @@ model.compile(loss='categorical_crossentropy',
               optimizer=sgd,
               metrics=['accuracy'])
 
+hist = model.fit_generator(
+        train_generator,
+        samples_per_epoch=2000,
+        nb_epoch=10,
+        validation_data=validation_generator,
+        nb_val_samples=800)
+
+'''
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
 X_train /= np.max(X_train)
 X_test /= np.max(X_train)
+
 
 hist = model.fit(X_train, Y_train,
             verbose=2,
@@ -64,6 +90,7 @@ hist = model.fit(X_train, Y_train,
             nb_epoch=nEpoch,
             validation_data=(X_test, Y_test),
             shuffle=True)
+'''
 
 # serialize weights to HDF5
 model.save_weights("model.h5")

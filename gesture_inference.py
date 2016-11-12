@@ -3,11 +3,6 @@ from keras.layers import Dense
 from keras.models import model_from_json
 import numpy
 import os
-import cv2
-import numpy as np
-
-#fetch the video stream
-vid_feed = cv2.VideoCapture(0)
 
 loaded_model = model_from_json(loaded_model_json)
 # load weights into new model
