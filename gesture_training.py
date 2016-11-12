@@ -19,14 +19,14 @@ train_datagen = ImageDataGenerator()
 test_datagen = ImageDataGenerator()
 
 train_generator = train_datagen.flow_from_directory(
-        '/home/akshat/deep_learning/Consolidated_Data_Set/Small_dataset/training',
+        '/home/akshat/deep_learning/Consolidated_Data_Set/Dataset/training',
         target_size=(224, 224),
-        batch_size=30)
+        batch_size=50)
 
 validation_generator = test_datagen.flow_from_directory(
-        '/home/akshat/deep_learning/Consolidated_Data_Set/Small_dataset/validation',
+        '/home/akshat/deep_learning/Consolidated_Data_Set/Dataset/validation',
         target_size=(224, 224),
-        batch_size=30)
+        batch_size=50)
 
 #################################################
 '''
