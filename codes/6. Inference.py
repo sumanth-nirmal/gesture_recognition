@@ -20,14 +20,29 @@ print("Loaded model from disk")
 loaded_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
 # Code to load the image from webcam
-#cam = cv2.VideoCapture(0)
-#ret, im = cam.read()
+cam = cv2.VideoCapture(0)
 
-# Code to load the image from local directory
-im = cv2.imread('test_images/5.jpeg')
-im = cv2.resize(im, (224, 224)).astype(np.float32)
-im = im.transpose((2,0,1))
-im = np.expand_dims(im, axis=0)
+print 'Press <q> to exit this code!'
 
-out = loaded_model.predict(im)
-print 'The recognized gesture is Gesture ' + str(np.argmax(out)+1)
+while(1):
+    ret, img = cam.read()
+
+    # Code to load the image from local directory
+    #im = cv2.imread('test_images/5.jpeg')
+    im = img.copy()
+    im = cv2.resize(im, (224, 224)).astype(np.float32)
+    im = im.transpose((2,0,1))
+    im = np.expand_dims(im, axis=0)
+
+    out = loaded_model.predict(im)
+    
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(img,'Gesture ' + str(np.argmax(out)+1),(20,150), font, 3,(255,255,255),2,cv2.CV_AA)
+    cv2.imshow('Input', img)
+    
+    k = cv2.waitKey(33)
+  
+    if k == 1048689:
+	cam.release()
+	break
+
